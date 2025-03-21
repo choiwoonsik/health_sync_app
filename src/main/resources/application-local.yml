@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: healthSync
+  datasource:
+    url: jdbc:mysql://localhost:3306/health_sync?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: health_sync
+    password: health_sync
+    isolation-level: REAPATABLE_READ
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      org:
+        hibernate:
+          format_sql: true
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+        default_schema: stock
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 1
+    user: health_sync
+    password: health_sync
+    enabled: true
+    url: jdbc:mysql://localhost:3306/health_sync?serverTimezone=UTC&characterEncoding=UTF-8
+    locations: classpath:db/migration, classpath:db/seed
+    repeatable-sql-migration-prefix: R
+    schemas: health_sync
+  data:
+    redis:
+      host: localhost
+      port: 6379

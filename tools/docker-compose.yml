@@ -1,0 +1,58 @@
+version: '3'
+
+networks:
+  network:
+
+volumes:
+  health_sync-mysql:
+  health_sync-zookeeper:
+  health_sync-kafka:
+  health_sync-redis:
+
+services:
+  mysql:
+    container_name: health_sync-mysql
+    image: ubuntu/mysql:edge
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --explicit_defaults_for_timestamp=1 --init-file /data/application/init.sql
+    environment:
+      - MYSQL_DATABASE=health_sync
+      - MYSQL_USER=health_sync
+      - MYSQL_PASSWORD=health_sync
+      - MYSQL_ROOT_PASSWORD=health_sync
+      - TZ=UTC
+    volumes:
+      - health_sync-mysql:/var/lib/mysql
+      - ./mysql/init.sql:/data/application/init.sql
+    ports:
+      - "3306:3306"
+
+  zookeeper:
+    container_name: health_sync-zookeeper
+    image: zookeeper:latest
+    ports:
+      - "2181:2181"
+
+  kafka:
+    container_name: health_sync-kafka
+    image: bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  redis:
+    container_name: health_sync-redis
+    image: redis:4-alpine
+    networks:
+      - network
+    ports:
+      - "6379:6379"
+    volumes:
+      - health_sync-redis:/data
