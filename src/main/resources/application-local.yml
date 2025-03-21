@@ -9,7 +9,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: health_sync
     password: health_sync
-    isolation-level: REAPATABLE_READ
   jpa:
     hibernate:
       ddl-auto: none
