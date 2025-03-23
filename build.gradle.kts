@@ -54,6 +54,11 @@ dependencies {
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.4.2")
 
+    /**
+     * Swagger
+     */
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
     runtimeOnly("com.mysql:mysql-connector-j")
 
     /**
@@ -70,6 +75,12 @@ dependencies {
      * mockk
      */
     testImplementation("io.mockk:mockk:1.13.3")
+
+    /**
+     * Util
+     */
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
