@@ -3,6 +3,8 @@ package com.kbhealthcare.ocare.healthSync.repository;
 import com.kbhealthcare.ocare.healthSync.entity.HealthSync;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HealthSyncJpaRepository extends JpaRepository<HealthSync, Long> {
+import java.util.Optional;
 
+public interface HealthSyncJpaRepository extends JpaRepository<HealthSync, Long> {
+    public Optional<HealthSync> findByRecordKey(String recordKey);
 }

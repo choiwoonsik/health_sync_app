@@ -13,15 +13,15 @@ create table health_syncs
 
 create table `health_sync_sources`
 (
-    id            bigint       not null auto_increment,
-    sync_id       bigint       not null comment '건강 동기화 유형 PK',
-    device_name   varchar(255) not null comment '출처 디바이스 이름',
-    device_vender varchar(255) not null comment '출처 디바이스 제조사',
-    source_mode   int          not null comment '출처 모드 번호',
-    source_name   varchar(255) not null comment '출처명',
-    source_type   varchar(255) not null comment '출처 유형',
-    date_created  datetime(6)  not null comment '생성일시',
-    date_updated  datetime(6)  not null comment '수정일시',
+    id            bigint      not null auto_increment,
+    sync_id       bigint      not null comment '건강 동기화 유형 PK',
+    device_name   varchar(63) not null comment '출처 디바이스 이름',
+    device_vender varchar(63) not null comment '출처 디바이스 제조사',
+    source_mode   int         not null comment '출처 모드 번호',
+    source_name   varchar(63) not null comment '출처명',
+    source_type   varchar(63) not null comment '출처 유형',
+    date_created  datetime(6) not null comment '생성일시',
+    date_updated  datetime(6) not null comment '수정일시',
     primary key (id),
     index idx_sync_id (sync_id)
 ) engine = innodb

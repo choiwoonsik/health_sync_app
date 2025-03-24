@@ -1,5 +1,6 @@
 package com.kbhealthcare.ocare.healthSync.common;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.time.OffsetDateTime;
 public abstract class BaseTimeEntity implements Serializable {
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;
 
     @LastModifiedDate

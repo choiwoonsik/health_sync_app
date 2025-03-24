@@ -1,6 +1,5 @@
 package com.kbhealthcare.ocare.healthSync.entity;
 
-import com.kbhealthcare.ocare.healthSync.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,33 +11,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "health_sync_sources")
+@Table(name = "health_sync_entry_raws")
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class HealthSyncSource extends BaseTimeEntity {
+public class HealthSyncEntryRaw {
     @Column(nullable = false)
     private Long syncId;
 
     @Column(nullable = false)
-    private String deviceName;
+    private Long sourceId;
 
     @Column(nullable = false)
-    private String deviceVender;
-
-    @Column(nullable = false)
-    private int sourceMode;
-
-    @Column(nullable = false)
-    private String sourceName;
-
-    @Column(nullable = false)
-    private String sourceType;
+    private String rawData;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id = 0L;
 }
-
