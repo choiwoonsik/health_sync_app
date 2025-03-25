@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/health")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class HealthSyncController {
+public class HealthSyncCommandController {
     private final HealthSyncCommandService healthSyncCommandService;
 
-    @PostMapping("/sync")
+    @PostMapping("health/sync")
     public ResponseEntity<Boolean> healthSync(
             @RequestBody HealthSyncInput healthSyncInput
     ) {

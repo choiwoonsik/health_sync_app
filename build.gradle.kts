@@ -6,6 +6,9 @@ plugins {
     id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.flywaydb.flyway") version "7.7.3"
+    kotlin("kapt") version "1.9.25"
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
 }
 
 group = "com.kbhealthcare.ocare"
@@ -47,6 +50,8 @@ dependencies {
      */
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
     implementation("com.querydsl:querydsl-core:5.1.0")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
 
     /**
      * etc
@@ -85,6 +90,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 flyway {
     url = "jdbc:mysql://localhost:3306/health_sync?serverTimezone=UTC&characterEncoding=UTF-8"
     user = "health_sync"
@@ -92,7 +101,8 @@ flyway {
     baselineVersion = "1"
     baselineOnMigrate = true
     schemas = listOf("health_sync").toTypedArray()
-    locations = listOf("filesystem:src/main/resources/db/migration", "filesystem:src/main/resources/db/seed").toTypedArray()
+    locations =
+        listOf("filesystem:src/main/resources/db/migration", "filesystem:src/main/resources/db/seed").toTypedArray()
 }
 
 tasks.register<FlywayMigrateTask>("flywayMigrateTestDB", fun FlywayMigrateTask.() {

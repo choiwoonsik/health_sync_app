@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface HealthSyncSourceJpaRepository extends JpaRepository<HealthSyncSource, Long> {
-    public Optional<HealthSyncSource> findBySyncId(Long syncId);
+    Optional<HealthSyncSource> findBySyncId(Long syncId);
 }

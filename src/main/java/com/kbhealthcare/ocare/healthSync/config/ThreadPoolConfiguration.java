@@ -1,4 +1,4 @@
-package com.kbhealthcare.ocare.healthSync;
+package com.kbhealthcare.ocare.healthSync.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

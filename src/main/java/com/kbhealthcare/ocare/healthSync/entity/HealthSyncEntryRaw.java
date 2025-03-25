@@ -29,5 +29,5 @@ public class HealthSyncEntryRaw {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id = 0L;
+    private Long id;
 }
