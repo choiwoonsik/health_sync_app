@@ -30,7 +30,7 @@ public class HealthSyncQueryController {
                 healthSyncAggregateService.aggregateDailyHealthSyncDataByRecordKey(recordKey);
 
         List<HealthSyncResponse> data =
-                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toDto).toList();
+                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toResponse).toList();
 
         return ResponseEntity.ok(data);
     }
@@ -44,7 +44,7 @@ public class HealthSyncQueryController {
                 healthSyncAggregateService.aggregateAllDailyHealthSyncData();
 
         List<HealthSyncResponse> data =
-                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toDto).toList();
+                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toResponse).toList();
 
         return ResponseEntity.ok(data);
     }

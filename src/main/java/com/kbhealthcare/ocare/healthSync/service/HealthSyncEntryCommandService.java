@@ -7,15 +7,22 @@ import com.kbhealthcare.ocare.healthSync.repository.HealthSyncEntryJpaRepository
 import com.kbhealthcare.ocare.healthSync.repository.HealthSyncJpaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HealthSyncEntryCommandService {
     private final HealthSyncJpaRepository healthSyncJpaRepository;
     private final HealthSyncEntryJpaRepository healthSyncEntryJpaRepository;
+    private final HealthSyncCacheService healthSyncCacheService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void createHealthSyncEntry(Long syncId, Long sourceId, List<HealthSyncEntryDto> entryList) {
@@ -29,5 +36,15 @@ public class HealthSyncEntryCommandService {
                         .toList();
 
         healthSyncEntryJpaRepository.saveAll(healthSyncEntryList);
+
+        applicationEventPublisher.publishEvent(healthSync.getRecordKey());
+        log.info("HealthSyncEntry 저장 완료: syncId={}, sourceId={}, entrySize={}", syncId, sourceId, healthSyncEntryList.size());
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void evictHealthSyncRecordKey(String recordKey) {
+        log.info("Evict cache for recordKey: {}", recordKey);
+        healthSyncCacheService.evictDailyCache(recordKey);
+        healthSyncCacheService.evictMonthlyCache(recordKey);
     }
 }

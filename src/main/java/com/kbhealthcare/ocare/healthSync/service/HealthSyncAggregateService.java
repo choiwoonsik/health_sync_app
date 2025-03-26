@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,9 @@ public class HealthSyncAggregateService {
                 .values()
                 .stream()
                 .map(DailyAggregateMutable::toDto)
+                .sorted(Comparator.comparing(DailyHealthSyncEntryAggregate::date).reversed()
+                        .thenComparing(DailyHealthSyncEntryAggregate::recordKey)
+                )
                 .toList();
     }
 
@@ -95,6 +99,9 @@ public class HealthSyncAggregateService {
                 .values()
                 .stream()
                 .map(DailyAggregateMutable::toDto)
+                .sorted(Comparator.comparing(DailyHealthSyncEntryAggregate::date).reversed()
+                        .thenComparing(DailyHealthSyncEntryAggregate::recordKey)
+                )
                 .toList();
     }
 
@@ -133,6 +140,9 @@ public class HealthSyncAggregateService {
                 .values()
                 .stream()
                 .map(MonthlyAggregateMutable::toDto)
+                .sorted(Comparator.comparing(MonthlyHealthSyncEntryAggregate::date).reversed()
+                        .thenComparing(MonthlyHealthSyncEntryAggregate::recordKey)
+                )
                 .toList();
     }
 

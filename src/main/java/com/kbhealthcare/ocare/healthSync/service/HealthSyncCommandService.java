@@ -31,19 +31,21 @@ public class HealthSyncCommandService {
         Long syncId;
         Optional<HealthSync> healthSync = healthSyncJpaRepository.findByRecordKey(recordKey);
 
-        if (healthSync.isPresent()) throw new RuntimeException("이미 동기화된 데이터입니다.");
-        else {
+        if (healthSync.isEmpty()) {
             HealthSync syncEntity = healthSyncDto.toEntity();
             syncId = healthSyncJpaRepository.save(syncEntity).getId();
+        } else {
+            syncId = healthSync.get().getId();
         }
 
         Long sourceId;
         Optional<HealthSyncSource> healthSyncSource = healthSyncSourceJpaRepository.findBySyncId(syncId);
 
-        if (healthSyncSource.isPresent()) throw new RuntimeException("이미 동기화된 데이터입니다.");
-        else {
+        if (healthSyncSource.isEmpty()) {
             HealthSyncSource sourceEntity = healthSyncDto.data().source().toEntity(syncId);
             sourceId = healthSyncSourceJpaRepository.save(sourceEntity).getId();
+        } else {
+            sourceId = healthSyncSource.get().getId();
         }
 
         /*

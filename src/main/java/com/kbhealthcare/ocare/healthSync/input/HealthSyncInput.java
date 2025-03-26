@@ -110,10 +110,8 @@ record HealthSyncPeriodInput(
             fromOffsetTime = LocalDateTime.parse(from, yyyyMMdd_HHmmss).atOffset(OFFSET_SEOUL);
             toOffsetTime = LocalDateTime.parse(to, yyyyMMdd_HHmmss).atOffset(OFFSET_SEOUL);
         } else {
-            String fromReplaced = from.replace("+0000", "+00:00");
-            String toReplaced = to.replace("+0000", "+00:00");
-            fromOffsetTime = OffsetDateTime.parse(fromReplaced, yyyyMMddTHHmmssZ);
-            toOffsetTime = OffsetDateTime.parse(toReplaced, yyyyMMddTHHmmssZ);
+            fromOffsetTime = OffsetDateTime.parse(from, yyyyMMddTHHmmssZ);
+            toOffsetTime = OffsetDateTime.parse(to, yyyyMMddTHHmmssZ);
         }
 
         return new PeriodDto(

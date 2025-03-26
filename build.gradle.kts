@@ -35,6 +35,16 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
     /**
+     * redis
+     */
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.0")
+    implementation("io.lettuce:lettuce-core")
+
+
+    /**
      * flyway
      */
     implementation("org.flywaydb:flyway-core")
@@ -122,6 +132,10 @@ tasks.register<FlywayCleanTask>("flywayCleanTestDB", fun FlywayCleanTask.() {
     password = "health_sync"
     schemas = listOf("health_sync_test").toTypedArray()
 })
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-parameters")
+}
 
 tasks.withType<Test> {
     useJUnitPlatform()

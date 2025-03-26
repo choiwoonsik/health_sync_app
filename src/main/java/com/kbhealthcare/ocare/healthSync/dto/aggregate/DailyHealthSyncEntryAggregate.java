@@ -11,7 +11,7 @@ public record DailyHealthSyncEntryAggregate(
         Double calorieValue,
         Double distanceValue
 ) {
-    public HealthSyncResponse toDto() {
+    public HealthSyncResponse toResponse() {
         String yyyyMMdd = date.getYear() + "-" + date.getMonthValue() + "." + date.getDayOfMonth();
 
         return new HealthSyncResponse(recordKey, yyyyMMdd, activityValue, calorieValue, distanceValue);
