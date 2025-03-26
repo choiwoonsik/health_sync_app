@@ -3,7 +3,7 @@ package com.kbhealthcare.ocare.healthSync.controller;
 import com.kbhealthcare.ocare.healthSync.dto.aggregate.DailyHealthSyncEntryAggregate;
 import com.kbhealthcare.ocare.healthSync.dto.aggregate.MonthlyHealthSyncEntryAggregate;
 import com.kbhealthcare.ocare.healthSync.response.HealthSyncResponse;
-import com.kbhealthcare.ocare.healthSync.service.HealthSyncAggregateService;
+import com.kbhealthcare.ocare.healthSync.service.HealthSyncService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class HealthSyncQueryController {
-    private final HealthSyncAggregateService healthSyncAggregateService;
+    private final HealthSyncService healthSyncService;
 
     /**
      * 입력받은 레코드키에 대한 일별 건강동기화 데이터 목록을 집계하여 반환합니다.
@@ -26,11 +26,7 @@ public class HealthSyncQueryController {
     public ResponseEntity<List<HealthSyncResponse>> getDailyHealthSyncByRecordKey(
             @RequestParam(name = "recordKey") String recordKey
     ) {
-        List<DailyHealthSyncEntryAggregate> dailyHealthSyncEntryAggregates =
-                healthSyncAggregateService.aggregateDailyHealthSyncDataByRecordKey(recordKey);
-
-        List<HealthSyncResponse> data =
-                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toResponse).toList();
+        List<HealthSyncResponse> data = healthSyncService.getDailyHealthSyncByRecordKey(recordKey);
 
         return ResponseEntity.ok(data);
     }
@@ -40,11 +36,7 @@ public class HealthSyncQueryController {
      */
     @GetMapping("/health/daily/all")
     public ResponseEntity<List<HealthSyncResponse>> getAllDailyHealthSync() {
-        List<DailyHealthSyncEntryAggregate> dailyHealthSyncEntryAggregates =
-                healthSyncAggregateService.aggregateAllDailyHealthSyncData();
-
-        List<HealthSyncResponse> data =
-                dailyHealthSyncEntryAggregates.stream().map(DailyHealthSyncEntryAggregate::toResponse).toList();
+        List<HealthSyncResponse> data = healthSyncService.getAllDailyHealthSync();
 
         return ResponseEntity.ok(data);
     }
@@ -54,11 +46,7 @@ public class HealthSyncQueryController {
      */
     @GetMapping("/health/monthly/all")
     public ResponseEntity<List<HealthSyncResponse>> getAllMonthlyHealthSync() {
-        List<MonthlyHealthSyncEntryAggregate> monthlyHealthSyncEntryAggregates =
-                healthSyncAggregateService.aggregateAllMonthlyHealthSyncData();
-
-        List<HealthSyncResponse> data =
-                monthlyHealthSyncEntryAggregates.stream().map(MonthlyHealthSyncEntryAggregate::toDto).toList();
+        List<HealthSyncResponse> data = healthSyncService.getAllMonthlyHealthSync();
 
         return ResponseEntity.ok(data);
     }

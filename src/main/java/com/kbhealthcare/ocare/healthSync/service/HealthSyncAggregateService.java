@@ -33,8 +33,8 @@ public class HealthSyncAggregateService {
         int offset = 0;
         int size = PAGE_SIZE;
 
-        Map<LocalDate, DailyAggregateMutable> aggregateMap = new HashMap<>();
-        DailyAggregateMutable agg = null;
+        Map<LocalDate, DailyAggregateMutable> dailyAggregateMap = new HashMap<>();
+        DailyAggregateMutable dailyAggreate = null;
 
         while (true) {
             List<HealthSyncEntry> page =
@@ -43,19 +43,19 @@ public class HealthSyncAggregateService {
             for (HealthSyncEntry entry : page) {
                 LocalDate dateKey = entry.getPeriodFrom().toLocalDate();
 
-                agg = aggregateMap.computeIfAbsent(dateKey, k -> new DailyAggregateMutable(recordKey, dateKey));
-                agg.addActivity(entry.getActivityValue());
-                agg.addCalories(entry.getCaloriesValue());
-                agg.addDistance(entry.getDistanceValue());
+                dailyAggreate = dailyAggregateMap.computeIfAbsent(dateKey, k -> new DailyAggregateMutable(recordKey, dateKey));
+                dailyAggreate.addActivity(entry.getActivityValue());
+                dailyAggreate.addCalories(entry.getCaloriesValue());
+                dailyAggreate.addDistance(entry.getDistanceValue());
             }
 
             if (page.size() == size) offset = page.get(page.size() - 1).getId().intValue();
             else break;
         }
 
-        if (agg == null) return null;
+        if (dailyAggreate == null) return null;
 
-        return aggregateMap
+        return dailyAggregateMap
                 .values()
                 .stream()
                 .map(DailyAggregateMutable::toDto)
@@ -74,8 +74,8 @@ public class HealthSyncAggregateService {
 
         Map<Long, String> allSyncIdRecordKeyMap = healthSyncQueryService.findAllSyncIdRecordKeyMap();
 
-        Map<Pair<Long, LocalDate>, DailyAggregateMutable> aggregateMap = new HashMap<>();
-        DailyAggregateMutable agg;
+        Map<Pair<Long, LocalDate>, DailyAggregateMutable> dailyAggregateMap = new HashMap<>();
+        DailyAggregateMutable dailyAggregate;
 
         while (true) {
             List<HealthSyncEntry> page = healthSyncEntryRepository.findAllHealthSyncEntryListOfPage(offset, size);
@@ -85,17 +85,17 @@ public class HealthSyncAggregateService {
                 Pair<Long, LocalDate> syncIdDateKey = new Pair<>(entry.getSyncId(), date);
                 String recordKey = allSyncIdRecordKeyMap.get(entry.getSyncId());
 
-                agg = aggregateMap.computeIfAbsent(syncIdDateKey, k -> new DailyAggregateMutable(recordKey, date));
-                agg.addActivity(entry.getActivityValue());
-                agg.addCalories(entry.getCaloriesValue());
-                agg.addDistance(entry.getDistanceValue());
+                dailyAggregate = dailyAggregateMap.computeIfAbsent(syncIdDateKey, k -> new DailyAggregateMutable(recordKey, date));
+                dailyAggregate.addActivity(entry.getActivityValue());
+                dailyAggregate.addCalories(entry.getCaloriesValue());
+                dailyAggregate.addDistance(entry.getDistanceValue());
             }
 
             if (page.size() == size) offset = page.get(page.size() - 1).getId().intValue();
             else break;
         }
 
-        return aggregateMap
+        return dailyAggregateMap
                 .values()
                 .stream()
                 .map(DailyAggregateMutable::toDto)
@@ -114,8 +114,8 @@ public class HealthSyncAggregateService {
 
         Map<Long, String> allSyncIdRecordKeyMap = healthSyncQueryService.findAllSyncIdRecordKeyMap();
 
-        Map<Pair<Long, String>, MonthlyAggregateMutable> aggregateMap = new HashMap<>();
-        MonthlyAggregateMutable agg;
+        Map<Pair<Long, String>, MonthlyAggregateMutable> monthlyAggregateMap = new HashMap<>();
+        MonthlyAggregateMutable monthlyAggregate;
 
         while (true) {
             List<HealthSyncEntry> page = healthSyncEntryRepository.findAllHealthSyncEntryListOfPage(offset, size);
@@ -126,17 +126,17 @@ public class HealthSyncAggregateService {
                 Pair<Long, String> syncIdDateKey = new Pair<>(entry.getSyncId(), yyyyMM);
                 String recordKey = allSyncIdRecordKeyMap.get(entry.getSyncId());
 
-                agg = aggregateMap.computeIfAbsent(syncIdDateKey, k -> new MonthlyAggregateMutable(recordKey, yyyyMM));
-                agg.addActivity(entry.getActivityValue());
-                agg.addCalories(entry.getCaloriesValue());
-                agg.addDistance(entry.getDistanceValue());
+                monthlyAggregate = monthlyAggregateMap.computeIfAbsent(syncIdDateKey, k -> new MonthlyAggregateMutable(recordKey, yyyyMM));
+                monthlyAggregate.addActivity(entry.getActivityValue());
+                monthlyAggregate.addCalories(entry.getCaloriesValue());
+                monthlyAggregate.addDistance(entry.getDistanceValue());
             }
 
             if (page.size() == size) offset = page.get(page.size() - 1).getId().intValue();
             else break;
         }
 
-        return aggregateMap
+        return monthlyAggregateMap
                 .values()
                 .stream()
                 .map(MonthlyAggregateMutable::toDto)

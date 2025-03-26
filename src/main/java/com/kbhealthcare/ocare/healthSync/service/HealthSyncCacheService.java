@@ -4,6 +4,9 @@ import com.kbhealthcare.ocare.healthSync.redis.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.kbhealthcare.ocare.healthSync.config.CacheKeys.DAILY_KEY;
+import static com.kbhealthcare.ocare.healthSync.config.CacheKeys.MONTHLY_KEY;
+
 @Service
 @RequiredArgsConstructor
 public class HealthSyncCacheService {
@@ -18,10 +21,10 @@ public class HealthSyncCacheService {
     }
 
     private String buildDailyKey(String recordKey) {
-        return "health.sync.day:" + recordKey;
+        return DAILY_KEY + ":" + recordKey;
     }
 
     private String buildMonthlyKey(String recordKey) {
-        return "health.sync.month:" + recordKey;
+        return MONTHLY_KEY + ":" + recordKey;
     }
 }
