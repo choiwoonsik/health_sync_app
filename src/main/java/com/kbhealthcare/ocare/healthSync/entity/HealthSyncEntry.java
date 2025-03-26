@@ -61,4 +61,11 @@ public class HealthSyncEntry extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public String getYearMonth() {
+        int year = periodFrom.getYear();
+        int month = periodFrom.getMonthValue();
+
+        return year + "-" + String.format("%02d", month);
+    }
 }

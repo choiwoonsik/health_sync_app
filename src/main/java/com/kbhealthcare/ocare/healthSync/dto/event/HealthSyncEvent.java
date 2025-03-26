@@ -7,6 +7,7 @@ import java.util.List;
 public record HealthSyncEvent(
         Long syncId,
         Long sourceId,
+        Long RawId,
         List<HealthSyncEntryDto> entries
 ) {
 }

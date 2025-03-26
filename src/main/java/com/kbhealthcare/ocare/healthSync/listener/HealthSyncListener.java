@@ -22,6 +22,12 @@ public class HealthSyncListener {
     private final DefaultKafkaProducer defaultKafkaProducer;
     private final ThreadPoolTaskExecutor eventAsyncExecutor;
 
+    /**
+     * 건강 데이터 동기화 이벤트를 받아서 Kafka 메시지로 발행한다.
+     * - entries를 CHUNK_SIZE 만큼 나눠서 Kafka 메시지로 발행한다.
+     * - sync_id, source_id, raw_Id를 이용해서 메시지 유실 시 재발행을 요청한다.
+     * @param event
+     */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void publishHealthSync(HealthSyncEvent event) {
         Stream<HealthSyncEntryDto> entryDtoStream = event.entries().stream();
@@ -35,6 +41,7 @@ public class HealthSyncListener {
             HealthSyncEntryChunkMessageDto messageDto = new HealthSyncEntryChunkMessageDto(
                     event.syncId(),
                     event.sourceId(),
+                    event.RawId(),
                     index,
                     totalChunks,
                     healthSyncEntryDtos

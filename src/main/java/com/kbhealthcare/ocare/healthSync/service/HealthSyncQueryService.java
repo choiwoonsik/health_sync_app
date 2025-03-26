@@ -4,6 +4,7 @@ import com.kbhealthcare.ocare.healthSync.entity.HealthSync;
 import com.kbhealthcare.ocare.healthSync.repository.HealthSyncJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,12 +14,14 @@ import java.util.stream.Collectors;
 public class HealthSyncQueryService {
     private final HealthSyncJpaRepository healthSyncJpaRepository;
 
+    @Transactional(readOnly = true)
     public Long findSyncIdByRecordKey(String recordKey) {
         return healthSyncJpaRepository.findByRecordKey(recordKey)
                 .orElseThrow(() -> new RuntimeException("해당 레코드키에 대한 동기화 데이터가 없습니다."))
                 .getId();
     }
 
+    @Transactional(readOnly = true)
     public Map<Long, String> findAllSyncIdRecordKeyMap() {
         return healthSyncJpaRepository.findAll()
                 .stream()

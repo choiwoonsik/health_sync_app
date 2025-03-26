@@ -52,10 +52,10 @@ public class HealthSyncCommandService {
         2. Kafka 메시지를 발행하기 전 entries 에 대한 raw 데이터를 저장한다.
         TODO: 메시지 유실 시 해당 DB 조회 후 재발행 처리 (조회는 syncId, sourceId 로 조회)
          */
-        healthSyncRawService.createHealthSyncRaw(syncId, sourceId, healthSyncDto);
+        Long rawId = healthSyncRawService.createHealthSyncRaw(syncId, sourceId, healthSyncDto);
 
         // 3. 건강 데이터 동기화를 위해 Kafka 메시지를 발행한다.
-        HealthSyncEvent event = new HealthSyncEvent(syncId, sourceId, healthSyncDto.data().entries());
+        HealthSyncEvent event = new HealthSyncEvent(syncId, sourceId, rawId, healthSyncDto.data().entries());
         eventPublisher.publishEvent(event);
 
         return true;

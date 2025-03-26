@@ -18,7 +18,7 @@ public class HealthSyncRawService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public void createHealthSyncRaw(Long syncId, Long sourceId, HealthSyncDto healthSyncDto) {
+    public Long createHealthSyncRaw(Long syncId, Long sourceId, HealthSyncDto healthSyncDto) {
         // Kafka 메시지를 발행하기 전 DB에 저장한다.
         List<HealthSyncEntryDto> entryRawsData = healthSyncDto.data().entries();
 
@@ -35,6 +35,6 @@ public class HealthSyncRawService {
                 .rawData(healthSyncEntryRawsData)
                 .build();
 
-        healthSyncRawJpaRepository.save(healthSyncEntryRaw);
+        return healthSyncRawJpaRepository.save(healthSyncEntryRaw).getId();
     }
 }

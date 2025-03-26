@@ -40,12 +40,16 @@ public class HealthSyncConsumer {
 
             try {
                 messageDto = om.readValue(value, HealthSyncEntryChunkMessageDto.class);
+
+                /*
+                  TODO: chunkIndex/totalChunks와 messageDto.rawId를 이용하여 메시지 유실을 파악하고 재발행을 요청한다
+                 */
+
                 healthSyncEntryCommandService.createHealthSyncEntry(
                         messageDto.syncId(),
                         messageDto.sourceId(),
                         messageDto.entries()
                 );
-
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

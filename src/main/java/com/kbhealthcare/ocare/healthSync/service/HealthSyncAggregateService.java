@@ -37,12 +37,14 @@ public class HealthSyncAggregateService {
         DailyAggregateMutable dailyAggreate = null;
 
         while (true) {
+            // 페이징으로 건강 엔트리를 조회하여 일별 집계를 수행합니다. (전부 읽을때 까지)
             List<HealthSyncEntry> page =
                     healthSyncEntryRepository.findHealthSyncEntryListBySyncIdOfPage(syncId, sourceId, offset, size);
 
             for (HealthSyncEntry entry : page) {
                 LocalDate dateKey = entry.getPeriodFrom().toLocalDate();
 
+                // [레코드키-날짜]키로 일별 집계를 수행합니다.
                 dailyAggreate = dailyAggregateMap.computeIfAbsent(dateKey, k -> new DailyAggregateMutable(recordKey, dateKey));
                 dailyAggreate.addActivity(entry.getActivityValue());
                 dailyAggreate.addCalories(entry.getCaloriesValue());
@@ -55,6 +57,7 @@ public class HealthSyncAggregateService {
 
         if (dailyAggreate == null) return null;
 
+        // 집계된 일별 데이터를 DTO로 변환하고, 1. 일자, 2. 레코드키 순으로 정렬하여 반환합니다.
         return dailyAggregateMap
                 .values()
                 .stream()
@@ -74,6 +77,7 @@ public class HealthSyncAggregateService {
 
         Map<Long, String> allSyncIdRecordKeyMap = healthSyncQueryService.findAllSyncIdRecordKeyMap();
 
+        // [레코드키-날짜]키로 일별 집계를 수행합니다.
         Map<Pair<Long, LocalDate>, DailyAggregateMutable> dailyAggregateMap = new HashMap<>();
         DailyAggregateMutable dailyAggregate;
 
@@ -121,8 +125,7 @@ public class HealthSyncAggregateService {
             List<HealthSyncEntry> page = healthSyncEntryRepository.findAllHealthSyncEntryListOfPage(offset, size);
 
             for (HealthSyncEntry entry : page) {
-                LocalDate date = entry.getPeriodFrom().toLocalDate();
-                String yyyyMM = date.getYear() + "-" + date.getMonthValue();
+                String yyyyMM = entry.getYearMonth();
                 Pair<Long, String> syncIdDateKey = new Pair<>(entry.getSyncId(), yyyyMM);
                 String recordKey = allSyncIdRecordKeyMap.get(entry.getSyncId());
 
