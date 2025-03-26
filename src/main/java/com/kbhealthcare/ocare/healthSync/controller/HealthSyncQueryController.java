@@ -1,7 +1,5 @@
 package com.kbhealthcare.ocare.healthSync.controller;
 
-import com.kbhealthcare.ocare.healthSync.dto.aggregate.DailyHealthSyncEntryAggregate;
-import com.kbhealthcare.ocare.healthSync.dto.aggregate.MonthlyHealthSyncEntryAggregate;
 import com.kbhealthcare.ocare.healthSync.response.HealthSyncResponse;
 import com.kbhealthcare.ocare.healthSync.service.HealthSyncService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,7 @@ public class HealthSyncQueryController {
     private final HealthSyncService healthSyncService;
 
     /**
-     * 입력받은 레코드키에 대한 일별 건강동기화 데이터 목록을 집계하여 반환합니다.
+     * 입력받은 레코드키에 대한 일별 건강동기화 데이터 목록을 반환합니다.
      */
     @GetMapping("/health/daily")
     public ResponseEntity<List<HealthSyncResponse>> getDailyHealthSyncByRecordKey(
@@ -32,7 +30,7 @@ public class HealthSyncQueryController {
     }
 
     /**
-     * 모든 레코드키에 대한 일별 건강동기화 데이터 목록을 집계하여 반환합니다.
+     * 모든 레코드키에 대한 일별 건강동기화 데이터 목록을 반환합니다.
      */
     @GetMapping("/health/daily/all")
     public ResponseEntity<List<HealthSyncResponse>> getAllDailyHealthSync() {
@@ -42,7 +40,7 @@ public class HealthSyncQueryController {
     }
 
     /**
-     * 모든 레코드키에 대한 월별 건강동기화 데이터 목록을 집계하여 반환합니다.
+     * 모든 레코드키에 대한 월별 건강동기화 데이터 목록을 반환합니다.
      */
     @GetMapping("/health/monthly/all")
     public ResponseEntity<List<HealthSyncResponse>> getAllMonthlyHealthSync() {
