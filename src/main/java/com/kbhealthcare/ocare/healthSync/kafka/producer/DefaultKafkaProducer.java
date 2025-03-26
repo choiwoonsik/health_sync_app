@@ -1,4 +1,4 @@
-package com.kbhealthcare.ocare.healthSync.producer;
+package com.kbhealthcare.ocare.healthSync.kafka.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

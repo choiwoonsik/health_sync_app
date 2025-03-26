@@ -5,7 +5,7 @@ import com.kbhealthcare.ocare.healthSync.config.KafkaTopics;
 import com.kbhealthcare.ocare.healthSync.dto.HealthSyncEntryChunkMessageDto;
 import com.kbhealthcare.ocare.healthSync.dto.HealthSyncEntryDto;
 import com.kbhealthcare.ocare.healthSync.dto.event.HealthSyncEvent;
-import com.kbhealthcare.ocare.healthSync.producer.DefaultKafkaProducer;
+import com.kbhealthcare.ocare.healthSync.kafka.producer.DefaultKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
