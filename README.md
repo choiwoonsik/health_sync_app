@@ -87,7 +87,7 @@
 
 # 아키텍처
 
-![tools/오케어 백엔드 아키텍처 플로우차트.png](tools/오케어 백엔드 아키텍처 플로우차트.png)
+![오케어 백엔드 아키텍처 플로우차트.png](tools/flow_chart.png)
 
 # DB 설계
 ![오케어 DB ERD](tools/erd.gif)
